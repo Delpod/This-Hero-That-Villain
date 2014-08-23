@@ -39,8 +39,9 @@ Enemy::Enemy(int index, sf::Vector2f position, float scale) {
 }
 
 void Enemy::update() {
-	m_sprite.setPosition(m_pBody->GetPosition().x * m_scale * 10.0f, m_pBody->GetPosition().y * m_scale * 10.0f);
-	if(Game::Inst()->getLevel()->getPlayer()->isRunning()) {
+	m_sprite.setPosition(m_pBody->GetPosition().x * m_scale * 10.0f, m_pBody->GetPosition().y * m_scale * 10.0f);	
+}
+
+void Enemy::run() {
 		m_pBody->SetLinearVelocity(b2Vec2(5.0f, m_pBody->GetLinearVelocity().y));
-	}
 }

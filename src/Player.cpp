@@ -20,7 +20,7 @@ Player::Player(int index, sf::Vector2f position, float scale) {
 	
 	m_sprite.setPosition(position.x, position.y);
 
-	m_bodyDef.position = b2Vec2(position.x / scale / 10.0f, position.y / scale / 10.0f);
+	m_bodyDef.position = b2Vec2(position.x / scale / 10.0f, position.y / scale / 10.0f - collisionRect.height / 20.0f - 0.8f);
 	m_bodyDef.type = b2_dynamicBody;
 	m_bodyDef.fixedRotation = true;
 	
@@ -45,14 +45,21 @@ void Player::update() {
 	if(m_bRunning) {
 		Game::Inst()->getWindow()->setView(sf::View(sf::FloatRect(m_sprite.getPosition().x - 300.0f, 0.0f, 1024.0f, 576.0f)));
 	}
+	
+	if(!b2TestOverlap(m_pBody->GetFixtureList()->GetAABB(0), Game::Inst()->getLevel()->getGround()->getBody()->GetFixtureList()->GetAABB(0)))
+		m_bJumping = true;
+	else
+		m_bJumping = false;
 }
 
 void Player::jump() {
-	if(!m_bJumping)
+	if(!m_bJumping) {
 		m_pBody->SetLinearVelocity(b2Vec2(m_pBody->GetLinearVelocity().x, -5.0f));
+		m_bJumping = true;
+	}
 }
 
 void Player::scale(float relativeScale) {
-	m_relativeScale *= relativeScale;
+	m_relativeScale = relativeScale;
 	m_sprite.setScale(m_scale, m_scale * m_relativeScale);
 }

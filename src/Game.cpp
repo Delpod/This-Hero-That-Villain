@@ -65,11 +65,13 @@ void Game::handleEvents() {
 	while(m_pWindow->pollEvent(event)) {
 		if(event.type == sf::Event::Closed)
 			m_bRunning = false;
-		else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
-			if(m_pLevel->getPlayer()->isRunning())
+		else if(event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::W)) {
+			if(m_pLevel->getPlayer()->isRunning()) {
 				m_pLevel->getPlayer()->jump();
-			else
+			} else {
 				m_pLevel->getPlayer()->run();
+				m_pLevel->getEnemy()->run();
+			}
 		}
 	}
 }

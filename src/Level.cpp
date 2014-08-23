@@ -35,12 +35,14 @@ void Level::create(int diff) {
 	std::uniform_int_distribution<unsigned int> uint_dist_index1(0, Game::Inst()->getPlayerIDs()->size() - 1);
 	unsigned int index = uint_dist_index1(m_random); 
 	
-	m_pPlayer = new Player(index, sf::Vector2f(350, 536));
+	m_pPlayer = new Player(index, sf::Vector2f(300, 536));
 	
 	std::uniform_int_distribution<unsigned int> uint_dist_index2(0, Game::Inst()->getEnemyIDs()->size() - 1);
 	index = uint_dist_index2(m_random);
 	
 	m_pEnemy = new Enemy(index, sf::Vector2f(0, 536));
+	
+	generateObstacles(diff, size);
 }
 
 Level::~Level() {
@@ -93,7 +95,7 @@ void Level::update() {
 void Level::generateObstacles(unsigned int diff, unsigned int size) {
 	m_obstacles.push_back(new GameObject(
 	*TextureManager::Inst()->getTexture("branch"),
-	sf::IntRect(512, 476, 8, 8),
+	sf::IntRect(1000, 476, 8, 8),
 	false,
 	sf::IntRect(0, 0, 0, 0),
 	5.0f,

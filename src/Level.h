@@ -13,6 +13,7 @@ public:
 	b2World*	getWorld()	{ return m_pWorld; }
 	Player*		getPlayer()	{ return m_pPlayer; }
 	Enemy*		getEnemy()	{ return m_pEnemy; }
+	GameObject*	getGround()	{ return m_pGround; }
 	void		draw();
 	void		update();
 private:
