@@ -28,6 +28,7 @@ public:
 	void initGame();
 	void initPause();
 	void initNextLevel();
+	void initLose();
 	
 	Level*								getLevel()					{ return m_pLevel; }
 	b2World*							getWorld()					{ return m_pLevel->getWorld(); }

@@ -37,7 +37,7 @@ void Game::loadTextures() {
 	
 	m_enemyIDs.push_back("witch");
 	m_enemyIDs.push_back("queen");
-	m_enemyIDs.push_back("fetus");
+	m_enemyIDs.push_back("doctor");
 	
 	m_playerNames["white"] = std::string("White");
 	m_playerNames["littlered"] = std::string("Little Red");
@@ -47,7 +47,7 @@ void Game::loadTextures() {
 	
 	m_enemyNames["witch"] = std::string("Witch");
 	m_enemyNames["queen"] = std::string("Evil Queen");
-	m_enemyNames["fetus"] = std::string("Fetus");
+	m_enemyNames["doctor"] = std::string("Dr.");
 	
 	m_playerCollisionRects["white"] = sf::IntRect(4, 4, 10, 28);
 	m_playerCollisionRects["littlered"] = sf::IntRect(0, 0, 10, 26);
@@ -57,7 +57,7 @@ void Game::loadTextures() {
 	
 	m_enemyCollisionRects["witch"] = sf::IntRect(0, 0, 14, 32);
 	m_enemyCollisionRects["queen"] = sf::IntRect(0, 4, 14, 36);
-	m_enemyCollisionRects["fetus"] = sf::IntRect(0, 6, 18, 20);
+	m_enemyCollisionRects["doctor"] = sf::IntRect(0, 6, 18, 20);
 	
 	for(unsigned int i = 0; i < m_playerIDs.size(); ++i) {
 		std::string path = "data/gfx/";
@@ -79,7 +79,7 @@ void Game::handleEvents() {
 	while(m_pWindow->pollEvent(event)) {
 		if(event.type == sf::Event::Closed)
 			m_bRunning = false;
-		if(state == MENU || state == PAUSE || state == NEXTLEVEL) {
+		if(state == MENU || state == PAUSE || state == NEXTLEVEL || state == LOSE) {
 			if(event.type == sf::Event::MouseMoved) {
 				sf::Vector2i mousePos = sf::Mouse::getPosition(*m_pWindow);
 				for(unsigned int i = 0; i < m_menuButtons.size(); ++i) {
@@ -109,6 +109,10 @@ void Game::handleEvents() {
 							break;
 						case 5:
 							increaseDiff();
+							delete m_pLevel;
+							initGame();
+							break;
+						case 6:
 							delete m_pLevel;
 							initGame();
 							break;
@@ -147,9 +151,9 @@ void Game::update() {
 void Game::draw() {
 	if(m_bRunning) {
 		m_pWindow->clear(sf::Color(0, 0, 0));
-		if(state == GAME || state == PAUSE || state == NEXTLEVEL) {
+		if(state == GAME || state == PAUSE || state == NEXTLEVEL || state == LOSE) {
 			m_pLevel->draw();
-			if(state == PAUSE || state == NEXTLEVEL) {
+			if(state == PAUSE || state == NEXTLEVEL || state == LOSE) {
 				sf::View view = m_pWindow->getView();
 				m_pWindow->setView(m_pWindow->getDefaultView());
 				m_pWindow->draw(m_whiteScreen);
@@ -268,4 +272,24 @@ void Game::initNextLevel() {
 	m_menuButtons[2]->getText()->setPosition(m_pWindow->getView().getCenter().x, m_pWindow->getView().getCenter().y + m_pWindow->getView().getSize().y / 4.0f);
 	m_pWindow->setView(view);
 	state = NEXTLEVEL;
+}
+
+void Game::initLose() {
+	sf::View view = m_pWindow->getView();
+	m_menuButtons.clear();
+	m_pWindow->setView(m_pWindow->getDefaultView());
+	m_whiteScreen.setPosition(m_pWindow->getView().getCenter());
+
+	m_font.loadFromFile("data/fonts/FORCED_SQUARE.ttf");
+	
+	m_menuButtons.push_back(new MenuButton(m_font, "You Lose", 0));
+	m_menuButtons[0]->getText()->setPosition(m_pWindow->getView().getCenter().x, m_pWindow->getView().getCenter().y - m_pWindow->getView().getSize().y / 4.0f);
+	
+	m_menuButtons.push_back(new MenuButton(m_font, "Retry", 6));
+	m_menuButtons[1]->getText()->setPosition(m_pWindow->getView().getCenter());
+	
+	m_menuButtons.push_back(new MenuButton(m_font, "Main Menu", 4));
+	m_menuButtons[2]->getText()->setPosition(m_pWindow->getView().getCenter().x, m_pWindow->getView().getCenter().y + m_pWindow->getView().getSize().y / 4.0f);
+	m_pWindow->setView(view);
+	state = LOSE;
 }

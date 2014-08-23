@@ -39,7 +39,7 @@ Player::Player(int index, sf::Vector2f position, float scale) {
 	
 	m_pBody->CreateFixture(&fixtureDef);
 	m_bCollidable = true;
-	m_bJumping = m_bRunning = false;
+	m_bJumping = m_bRunning = m_bInvulnerable = false;
 }
 
 void Player::update() {
@@ -69,7 +69,7 @@ void Player::update() {
 	if(!m_bInvulnerable) {
 		
 		if(b2TestOverlap(m_pBody->GetFixtureList()->GetAABB(0), Game::Inst()->getLevel()->getEnemy()->getBody()->GetFixtureList()->GetAABB(0))) {
-			
+			Game::Inst()->initLose();
 		}
 
 		std::list<GameObject*> *obstacles = Game::Inst()->getLevel()->getObstacles();
