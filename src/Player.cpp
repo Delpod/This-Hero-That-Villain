@@ -53,6 +53,42 @@ void Player::update() {
 		m_bJumping = true;
 	else
 		m_bJumping = false;
+		
+	if(m_bInvulnerable) {
+		if(m_invClock.getElapsedTime().asSeconds() >= 2.5f) {
+			m_sprite.setColor(sf::Color::White);
+			m_bInvulnerable = false;
+			m_pBody->SetLinearVelocity(b2Vec2(5.0f, m_pBody->GetLinearVelocity().y));
+		} else {
+			int a = m_invClock.getElapsedTime().asSeconds() / 2.5f * 255;
+			a = a < 64 ? 64 : a;
+			m_sprite.setColor(sf::Color(255, 255, 255, a));
+		}
+	}
+	
+	
+	if(!m_bInvulnerable) {
+		
+		if(b2TestOverlap(m_pBody->GetFixtureList()->GetAABB(0), Game::Inst()->getLevel()->getEnemy()->getBody()->GetFixtureList()->GetAABB(0))) {
+			std::cout << "DIE!";
+		}
+
+		std::list<GameObject*> *obstacles = Game::Inst()->getLevel()->getObstacles();
+		if(!obstacles->empty()) {
+			std::list<GameObject*>::iterator it = obstacles->begin();
+			sf::FloatRect player = m_sprite.getGlobalBounds();
+			int c = 6 > obstacles->size() ? obstacles->size() : 6;
+			for(int i = 0; i < c; ++i, ++it) {
+				sf::FloatRect obstacle = (*it)->getSprite()->getGlobalBounds();
+				if(player.intersects(obstacle)) {
+					m_bInvulnerable = true;
+					m_pBody->SetLinearVelocity(b2Vec2(4.33f, m_pBody->GetLinearVelocity().y));
+					m_invClock.restart();
+					break;
+				}
+			}
+		}
+	}
 }
 
 void Player::jump() {

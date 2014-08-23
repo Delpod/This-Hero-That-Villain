@@ -10,14 +10,15 @@ public:
 	Level();
 	void create(int diff);
 	~Level();
-	b2World*	getWorld()	{ return m_pWorld; }
-	Player*		getPlayer()	{ return m_pPlayer; }
-	Enemy*		getEnemy()	{ return m_pEnemy; }
-	GameObject*	getGround()	{ return m_pGround; }
-	void		draw();
-	void		update();
+	b2World*				 getWorld()	{ return m_pWorld; }
+	Player*					 getPlayer()	{ return m_pPlayer; }
+	Enemy*					 getEnemy()	{ return m_pEnemy; }
+	GameObject*				 getGround()	{ return m_pGround; }
+	std::list<GameObject*>*	 getObstacles() { return &m_obstacles; }
+	void					 draw();
+	void					 update();
 private:
-	void 		generateObstacles(unsigned int diff, unsigned int size);
+	void 					 generateObstacles(unsigned int diff, unsigned int size);
 	GameObject				 *m_pBackground;
 	std::vector<GameObject*> m_foreground;
 	std::list<GameObject*>	 m_obstacles;

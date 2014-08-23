@@ -8,7 +8,7 @@ void Game::init(sf::VideoMode vm, std::string title, int style) {
 	m_pWindow->setVerticalSyncEnabled(true);
 	loadTextures();
 	m_pLevel = new Level();
-	m_pLevel->create(2);
+	m_pLevel->create(50);
 	m_bRunning = true;
 }
 

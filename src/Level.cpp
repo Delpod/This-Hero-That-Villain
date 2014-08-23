@@ -67,9 +67,12 @@ void Level::draw() {
 	pSprite->move(pSprite->getLocalBounds().width, 0.0f);
 	m_pBackground->draw();
 	pSprite->move(-pSprite->getLocalBounds().width, 0.0f);
-		
-	for(std::list<GameObject*>::iterator it = m_obstacles.begin(); it != m_obstacles.end(); ++it)
-		(*it)->draw();
+	if(!m_obstacles.empty()) {
+		std::list<GameObject*>::iterator it = m_obstacles.begin();
+		int c = 6 > m_obstacles.size() ? m_obstacles.size() : 6;
+		for(int i = 0; i < c; ++i, ++it)
+			(*it)->draw();
+	}
 	m_pGround->draw();
 	m_pPlayer->draw();
 	m_pEnemy->draw();
@@ -84,7 +87,14 @@ void Level::update() {
 	sf::Sprite* pSprite = m_pBackground->getSprite();
 	if(pSprite->getPosition().x + pSprite->getOrigin().x <= Game::Inst()->getWindow()->getView().getCenter().x - Game::Inst()->getWindow()->getView().getSize().x / 2.0f)
 		pSprite->setPosition(pSprite->getPosition().x + pSprite->getLocalBounds().width, pSprite->getPosition().y);
-		
+	
+	if(!m_obstacles.empty()) {
+		pSprite = m_obstacles.front()->getSprite();
+		if(pSprite->getPosition().x + pSprite->getGlobalBounds().width < Game::Inst()->getWindow()->getView().getCenter().x - Game::Inst()->getWindow()->getView().getSize().x / 2.0f) {
+			delete m_obstacles.front();
+			m_obstacles.pop_front();
+		}
+	}
 	m_pGround->update();
 	m_pPlayer->update();
 	m_pEnemy->update();
@@ -116,7 +126,7 @@ void Level::generateObstacles(unsigned int diff, unsigned int size) {
 	
 	unsigned int last = first;
 	
-	std::uniform_int_distribution<unsigned int> uint_dist_from_last((unsigned int)(250 + 200 * mult), (unsigned int)(250 + 550 * mult));
+	std::uniform_int_distribution<unsigned int> uint_dist_from_last((unsigned int)(300 + 200 * mult), (unsigned int)(300 + 550 * mult));
 	unsigned int from_last = uint_dist_from_last(m_random);
 	
 	while((last + from_last) < (size - 1000)) {
