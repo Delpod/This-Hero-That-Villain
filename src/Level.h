@@ -18,7 +18,11 @@ public:
 	void					 draw();
 	void					 update();
 private:
-	void 					 generateObstacles(unsigned int diff, unsigned int size);
+	void 					 generateObstacles(unsigned int diff);
+	sf::Font				 m_pplFont;
+	sf::Text				 m_pplText;
+	sf::Clock				 m_clock;
+	sf::Time				 m_time;
 	GameObject				 *m_pBackground;
 	std::vector<GameObject*> m_foreground;
 	std::list<GameObject*>	 m_obstacles;
@@ -27,6 +31,7 @@ private:
 	Player					 *m_pPlayer;
 	Enemy					 *m_pEnemy;
 	b2World					 *m_pWorld;
+	unsigned int			m_size;
 };
 
 #endif // LEVEL_H

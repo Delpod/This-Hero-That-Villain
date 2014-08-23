@@ -1,7 +1,6 @@
 #include "Level.h"
 #include "Game.h"
 #include "TextureManager.h"
-#include <iostream>
 
 Level::Level() {
 	b2Vec2 gravity(0.0f, 10.0f);
@@ -9,16 +8,17 @@ Level::Level() {
 }
 
 void Level::create(int diff) {
+	
 	m_random.seed(time(0));
 	
 	float mult = (float)(10 + diff) / 10.0f;
 	
 	std::uniform_int_distribution<unsigned int> uint_dist_size((unsigned int)(15000 * mult), (unsigned int)(20000 * mult));
-	unsigned int size = uint_dist_size(m_random);
+	m_size = uint_dist_size(m_random);
 	
 	m_pGround = new GameObject(
 		*TextureManager::Inst()->getTexture("ground"),
-		sf::IntRect(size / 2.0f, Game::Inst()->getWindow()->getDefaultView().getSize().y - 40, size / 5.0f, 16),
+		sf::IntRect(m_size / 2.0f, Game::Inst()->getWindow()->getDefaultView().getSize().y - 40, m_size / 5.0f, 16),
 		true,
 		sf::IntRect(0, 0, 0, 0),
 		5.0f,
@@ -38,11 +38,23 @@ void Level::create(int diff) {
 	m_pPlayer = new Player(index, sf::Vector2f(300, 536));
 	
 	std::uniform_int_distribution<unsigned int> uint_dist_index2(0, Game::Inst()->getEnemyIDs()->size() - 1);
-	index = uint_dist_index2(m_random);
+	unsigned int index2 = uint_dist_index2(m_random);
 	
-	m_pEnemy = new Enemy(index, sf::Vector2f(0, 536));
+	m_pEnemy = new Enemy(index2, sf::Vector2f(0, 536));
 	
-	generateObstacles(diff, size);
+	generateObstacles(diff);
+	
+	m_pplFont.loadFromFile("data/fonts/Bonzer_-_San_Francisco.ttf");
+	std::string text = (*Game::Inst()->getEnemyNames())[(*Game::Inst()->getEnemyIDs())[index2]];
+	text += " vs. ";
+	text += (*Game::Inst()->getPlayerNames())[(*Game::Inst()->getPlayerIDs())[index]];
+	m_pplText.setString(text);
+	m_pplText.setCharacterSize(500);
+	m_pplText.setFont(m_pplFont);
+	m_pplText.setScale(0.5f, 0.5f);
+	m_pplText.setPosition(20.0f, -75.0f);
+	
+	Game::Inst()->getWindow()->setView(sf::View(sf::FloatRect(m_pPlayer->getSprite()->getPosition().x - 300.0f, 0.0f, 1024.0f, 576.0f)));
 }
 
 Level::~Level() {
@@ -79,6 +91,8 @@ void Level::draw() {
 	
 	for(unsigned int i = 0; i < m_foreground.size(); ++i)
 		m_foreground[i]->draw();
+		
+	Game::Inst()->getWindow()->draw(m_pplText);
 	
 }
 void Level::update() {
@@ -101,9 +115,12 @@ void Level::update() {
 	
 	for(unsigned int i = 0; i < m_foreground.size(); ++i)
 		m_foreground[i]->update();
+		
+	if(Game::Inst()->getWindow()->getView().getCenter().x + Game::Inst()->getWindow()->getView().getSize().x / 2.0f >= m_size - 50.0f)
+		Game::Inst()->initNextLevel();
 }
 
-void Level::generateObstacles(unsigned int diff, unsigned int size) {
+void Level::generateObstacles(unsigned int diff) {
 	m_random.seed(time(0));
 	
 	float mult = 2.0f / (float)diff;
@@ -129,7 +146,7 @@ void Level::generateObstacles(unsigned int diff, unsigned int size) {
 	std::uniform_int_distribution<unsigned int> uint_dist_from_last((unsigned int)(300 + 200 * mult), (unsigned int)(300 + 550 * mult));
 	unsigned int from_last = uint_dist_from_last(m_random);
 	
-	while((last + from_last) < (size - 1000)) {
+	while((last + from_last) < (m_size - 1000)) {
 		
 		obstacleIndex = uint_dist_obstacleIndex(m_random);
 		obstacleSize = (*Game::Inst()->getObstacleSizes())[(*Game::Inst()->getObstaclesIDs())[obstacleIndex]];

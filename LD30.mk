@@ -63,7 +63,7 @@ AS       := C:\MinGW-4.8.1\bin\as.exe
 ##
 CodeLiteDir:=C:\Program Files\CodeLite
 UNIT_TEST_PP_SRC_DIR:=C:\UnitTest++-1.3
-Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_GameObject.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_TextureManager.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Level.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Player.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_GameObject.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_TextureManager.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Level.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Player.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix) 
 
 
 
@@ -146,6 +146,14 @@ $(IntermediateDirectory)/src_Enemy.cpp$(DependSuffix): src/Enemy.cpp
 $(IntermediateDirectory)/src_Enemy.cpp$(PreprocessSuffix): src/Enemy.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Enemy.cpp$(PreprocessSuffix) "src/Enemy.cpp"
 
+$(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix): src/MenuButton.cpp $(IntermediateDirectory)/src_MenuButton.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Projects/LD30/src/MenuButton.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_MenuButton.cpp$(DependSuffix): src/MenuButton.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_MenuButton.cpp$(DependSuffix) -MM "src/MenuButton.cpp"
+
+$(IntermediateDirectory)/src_MenuButton.cpp$(PreprocessSuffix): src/MenuButton.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_MenuButton.cpp$(PreprocessSuffix) "src/MenuButton.cpp"
+
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
 ##
@@ -173,6 +181,9 @@ clean:
 	$(RM) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix)
 	$(RM) $(IntermediateDirectory)/src_Enemy.cpp$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/src_Enemy.cpp$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(PreprocessSuffix)
 	$(RM) $(OutputFile)
 	$(RM) $(OutputFile).exe
 	$(RM) ".build-debug/LD30"

@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "Game.h"
 #include "TextureManager.h"
-#include <iostream>
 
 Player::Player(int index, sf::Vector2f position, float scale) {
 	sf::Vector2u size = TextureManager::Inst()->getTexture((*Game::Inst()->getPlayerIDs())[index])->getSize();
@@ -70,7 +69,7 @@ void Player::update() {
 	if(!m_bInvulnerable) {
 		
 		if(b2TestOverlap(m_pBody->GetFixtureList()->GetAABB(0), Game::Inst()->getLevel()->getEnemy()->getBody()->GetFixtureList()->GetAABB(0))) {
-			std::cout << "DIE!";
+			
 		}
 
 		std::list<GameObject*> *obstacles = Game::Inst()->getLevel()->getObstacles();

@@ -1,6 +1,5 @@
 #include "GameObject.h"
 #include "Game.h"
-#include <iostream>
 
 GameObject::GameObject(sf::Texture &texture, sf::IntRect coords, bool collidable, sf::IntRect collisionRect, float scale, bool loopTexture) {
 	load(texture, coords, collidable, collisionRect, scale, loopTexture);

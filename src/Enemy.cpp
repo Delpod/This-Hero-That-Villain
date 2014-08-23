@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "Game.h"
 #include "TextureManager.h"
-#include <iostream>
+
 Enemy::Enemy(int index, sf::Vector2f position, float scale) {
 	sf::Vector2u size = TextureManager::Inst()->getTexture((*Game::Inst()->getEnemyIDs())[index])->getSize();
 	load(*TextureManager::Inst()->getTexture((*Game::Inst()->getEnemyIDs())[index]),
