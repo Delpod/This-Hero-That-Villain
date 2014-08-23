@@ -15,8 +15,15 @@ void Game::init(sf::VideoMode vm, std::string title, int style) {
 void Game::loadTextures() {
 	TextureManager::Inst()->load("data/gfx/ground.png", "ground");
 	TextureManager::Inst()->load("data/gfx/background.png", "background");
+	
 	TextureManager::Inst()->load("data/gfx/branch.png", "branch");
 	TextureManager::Inst()->load("data/gfx/rock.png", "rock");
+	
+	m_obstaclesIDs.push_back("branch");
+	m_obstaclesIDs.push_back("rock");
+	
+	m_obstacleSizes["branch"] = sf::Vector2i(8, 8);
+	m_obstacleSizes["rock"] = sf::Vector2i(10, 6);
 	
 	m_playerIDs.push_back("white");
 	m_playerIDs.push_back("littlered");

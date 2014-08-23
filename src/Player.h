@@ -14,6 +14,7 @@ public:
 	void scale(float relativeScale);
 private:
 	float m_relativeScale;
+	float m_colWidth;
 	bool m_bRunning;
 	bool m_bJumping;
 };

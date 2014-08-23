@@ -5,6 +5,7 @@
 
 Player::Player(int index, sf::Vector2f position, float scale) {
 	sf::Vector2u size = TextureManager::Inst()->getTexture((*Game::Inst()->getPlayerIDs())[index])->getSize();
+	
 	load(*TextureManager::Inst()->getTexture((*Game::Inst()->getPlayerIDs())[index]),
 	sf::IntRect(position.x, position.y, size.x, size.y),
 	false,
@@ -12,6 +13,8 @@ Player::Player(int index, sf::Vector2f position, float scale) {
 	scale);
 	
 	sf::IntRect collisionRect = (*Game::Inst()->getPlayerCollisionRects())[(*Game::Inst()->getPlayerIDs())[index]];
+	
+	m_colWidth = collisionRect.width / 2.0f;
 	
 	m_sprite.setScale(1.0f, 1.0f);
 	
@@ -54,7 +57,7 @@ void Player::update() {
 
 void Player::jump() {
 	if(!m_bJumping) {
-		m_pBody->SetLinearVelocity(b2Vec2(m_pBody->GetLinearVelocity().x, -5.0f));
+		m_pBody->SetLinearVelocity(b2Vec2(m_pBody->GetLinearVelocity().x, -5.0f - ((m_colWidth - 4.0f) / 10.0f)));
 		m_bJumping = true;
 	}
 }

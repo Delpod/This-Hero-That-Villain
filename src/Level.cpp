@@ -68,7 +68,8 @@ void Level::draw() {
 	m_pBackground->draw();
 	pSprite->move(-pSprite->getLocalBounds().width, 0.0f);
 		
-	m_obstacles.front()->draw();
+	for(std::list<GameObject*>::iterator it = m_obstacles.begin(); it != m_obstacles.end(); ++it)
+		(*it)->draw();
 	m_pGround->draw();
 	m_pPlayer->draw();
 	m_pEnemy->draw();
@@ -93,11 +94,46 @@ void Level::update() {
 }
 
 void Level::generateObstacles(unsigned int diff, unsigned int size) {
+	m_random.seed(time(0));
+	
+	float mult = 2.0f / (float)diff;
+	
+	std::uniform_int_distribution<unsigned int> uint_dist_first((unsigned int)(500 + 400 * mult), (unsigned int)(500 + 600 * mult));
+	unsigned int first = uint_dist_first(m_random);
+	
+	std::uniform_int_distribution<unsigned int> uint_dist_obstacleIndex(0, Game::Inst()->getObstaclesIDs()->size() - 1);
+	unsigned int obstacleIndex = uint_dist_obstacleIndex(m_random);
+	
+	sf::Vector2i obstacleSize = (*Game::Inst()->getObstacleSizes())[(*Game::Inst()->getObstaclesIDs())[obstacleIndex]];
+	
 	m_obstacles.push_back(new GameObject(
-	*TextureManager::Inst()->getTexture("branch"),
-	sf::IntRect(1000, 476, 8, 8),
+	*TextureManager::Inst()->getTexture((*Game::Inst()->getObstaclesIDs())[obstacleIndex]),
+	sf::IntRect(first, 476 + (8 - obstacleSize.y) * 5, obstacleSize.x, obstacleSize.y),
 	false,
 	sf::IntRect(0, 0, 0, 0),
 	5.0f,
 	false));
+	
+	unsigned int last = first;
+	
+	std::uniform_int_distribution<unsigned int> uint_dist_from_last((unsigned int)(250 + 200 * mult), (unsigned int)(250 + 550 * mult));
+	unsigned int from_last = uint_dist_from_last(m_random);
+	
+	while((last + from_last) < (size - 1000)) {
+		
+		obstacleIndex = uint_dist_obstacleIndex(m_random);
+		obstacleSize = (*Game::Inst()->getObstacleSizes())[(*Game::Inst()->getObstaclesIDs())[obstacleIndex]];
+		last += from_last;
+		
+		m_obstacles.push_back(new GameObject(
+		*TextureManager::Inst()->getTexture((*Game::Inst()->getObstaclesIDs())[obstacleIndex]),
+		sf::IntRect(last, 476 + (8 - obstacleSize.y) * 5, obstacleSize.x, obstacleSize.y),
+		false,
+		sf::IntRect(0, 0, 0, 0),
+		5.0f,
+		false));
+		
+		from_last = uint_dist_from_last(m_random);
+	}
+	
 }
