@@ -11,9 +11,9 @@ void Level::create(int diff) {
 	
 	m_random.seed(time(0));
 	
-	float mult = (float)(10 + diff) / 10.0f;
+	float mult = (float)(6 + diff * 2) / 10.0f;
 	
-	std::uniform_int_distribution<unsigned int> uint_dist_size((unsigned int)(15000 * mult), (unsigned int)(20000 * mult));
+	std::uniform_int_distribution<unsigned int> uint_dist_size((unsigned int)(5000 * mult), (unsigned int)(10000 * mult));
 	m_size = uint_dist_size(m_random);
 	
 	m_pGround = new GameObject(
@@ -43,6 +43,7 @@ void Level::create(int diff) {
 	m_pEnemy = new Enemy(index2, sf::Vector2f(0, 536));
 	
 	generateObstacles(diff);
+	generateOthers(index);
 	
 	m_pplFont.loadFromFile("data/fonts/Bonzer_-_San_Francisco.ttf");
 	std::string text = (*Game::Inst()->getEnemyNames())[(*Game::Inst()->getEnemyIDs())[index2]];
@@ -138,8 +139,7 @@ void Level::generateObstacles(unsigned int diff) {
 	sf::IntRect(first, 476 + (8 - obstacleSize.y) * 5, obstacleSize.x, obstacleSize.y),
 	false,
 	sf::IntRect(0, 0, 0, 0),
-	5.0f,
-	false));
+	5.0f));
 	
 	unsigned int last = first;
 	
@@ -157,10 +157,29 @@ void Level::generateObstacles(unsigned int diff) {
 		sf::IntRect(last, 476 + (8 - obstacleSize.y) * 5, obstacleSize.x, obstacleSize.y),
 		false,
 		sf::IntRect(0, 0, 0, 0),
-		5.0f,
-		false));
+		5.0f));
 		
 		from_last = uint_dist_from_last(m_random);
 	}
 	
+}
+
+void Level::generateOthers(unsigned int index) {
+	m_random.seed(time(0));
+	std::uniform_int_distribution<unsigned int> uint_dist_oth(m_size - 800, m_size);
+	
+	for(unsigned int i = 0; i < Game::Inst()->getPlayerIDs()->size(); ++i) {
+		if(i != index) {
+			unsigned int other = uint_dist_oth(m_random);
+			sf::Vector2u size = TextureManager::Inst()->getTexture((*Game::Inst()->getPlayerIDs())[i])->getSize();
+			
+			m_foreground.push_back(new GameObject(
+			*TextureManager::Inst()->getTexture((*Game::Inst()->getPlayerIDs())[i]),
+			sf::IntRect(other, 484 - size.y * 2.0f, size.x, size.y),
+			false,
+			sf::IntRect(0, 0, 0, 0),
+			5.0f));
+			m_foreground.back()->getSprite()->setScale(-5.0f, 5.0f);
+		}
+	}
 }

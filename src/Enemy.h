@@ -7,6 +7,8 @@ public:
 	Enemy(int index, sf::Vector2f position, float scale = 5.0f);
 	void update();
 	void run();
+private:
+	int m_rSide;
 };
 
 #endif // ENEMY_H

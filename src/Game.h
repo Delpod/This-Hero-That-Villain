@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <Box2D/Box2D.h>
 #include "Level.h"
 #include "MenuButton.h"
@@ -49,6 +50,7 @@ private:
 	Game() {}
 	void loadTextures();
 	sf::RenderWindow *m_pWindow;
+	sf::Music m_music;
 	sf::Font m_font;
 	sf::Font m_logoFont;
 	sf::Text m_logoText;

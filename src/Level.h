@@ -19,6 +19,7 @@ public:
 	void					 update();
 private:
 	void 					 generateObstacles(unsigned int diff);
+	void					 generateOthers(unsigned int index);
 	sf::Font				 m_pplFont;
 	sf::Text				 m_pplText;
 	sf::Clock				 m_clock;

@@ -36,9 +36,18 @@ Enemy::Enemy(int index, sf::Vector2f position, float scale) {
 	
 	m_pBody->CreateFixture(&fixtureDef);
 	m_bCollidable = true;
+	m_rSide = -1;
 }
 
 void Enemy::update() {
+	if(Game::Inst()->getLevel()->getPlayer()->isRunning()) {
+		sf::Vector2f origin = m_sprite.getOrigin();
+		m_sprite.setOrigin(m_sprite.getLocalBounds().width / 2.0f, m_sprite.getLocalBounds().height);
+		m_sprite.rotate(0.5f * m_rSide);
+		if((m_rSide == 1 && m_sprite.getRotation() >= m_rSide * 5.0f && m_sprite.getRotation() < 180.0f) || (m_rSide == -1 && m_sprite.getRotation() <= 360.0f + (m_rSide * 5.0f) && m_sprite.getRotation() > 180.0f))
+			m_rSide *= -1;
+		m_sprite.setOrigin(origin);
+	}
 	m_sprite.setPosition(m_pBody->GetPosition().x * m_scale * 10.0f, m_pBody->GetPosition().y * m_scale * 10.0f);	
 }
 

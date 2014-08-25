@@ -2,18 +2,18 @@
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
-## Debug
+## Release
 ProjectName            :=LD30
-ConfigurationName      :=Debug
+ConfigurationName      :=Release
 WorkspacePath          := "C:\Projects\LD30"
 ProjectPath            := "C:\Projects\LD30"
-IntermediateDirectory  :=./Debug
+IntermediateDirectory  :=./Release
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=xvix
-Date                   :=08/23/14
+Date                   :=08/25/14
 CodeLitePath           :="C:\Program Files\CodeLite"
 LinkerName             :=C:\MinGW-4.8.1\bin\g++.exe 
 SharedObjectLinkerName :=C:\MinGW-4.8.1\bin\g++.exe -shared -fPIC
@@ -28,7 +28,7 @@ LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
-Preprocessors          :=$(PreprocessorSwitch)SFML_STATIC 
+Preprocessors          :=$(PreprocessorSwitch)SFML_STATIC $(PreprocessorSwitch)NDEBUG 
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E
@@ -37,12 +37,12 @@ PCHCompileFlags        :=
 MakeDirCommand         :=makedir
 RcCmpOptions           := 
 RcCompilerName         :=C:\MinGW-4.8.1\bin\windres.exe 
-LinkOptions            :=  
+LinkOptions            :=  -mwindows 
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch). $(IncludeSwitch)C:/SFML-2.0/include $(IncludeSwitch)C:/Box2D/include 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := $(LibrarySwitch)sfml-audio-s-d $(LibrarySwitch)sfml-graphics-s-d $(LibrarySwitch)sfml-window-s-d $(LibrarySwitch)sfml-system-s-d $(LibrarySwitch)sfml-main-d $(LibrarySwitch)Box2D 
-ArLibs                 :=  "libsfml-audio-s-d.a" "libsfml-graphics-s-d.a" "libsfml-window-s-d.a" "libsfml-system-s-d.a" "libsfml-main-d.a" "libBox2D.a" 
+Libs                   := $(LibrarySwitch)sfml-audio-s $(LibrarySwitch)sfml-graphics-s $(LibrarySwitch)sfml-window-s $(LibrarySwitch)sfml-system-s $(LibrarySwitch)sfml-main $(LibrarySwitch)Box2D 
+ArLibs                 :=  "libsfml-audio-s.a" "libsfml-graphics-s.a" "libsfml-window-s.a" "libsfml-system-s.a" "libsfml-main.a" "libBox2D.a" 
 LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)C:/SFML-2.0/lib $(LibraryPathSwitch)C:/Box2D/lib 
 
 ##
@@ -52,8 +52,8 @@ LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)C:/SFML-2.0/
 AR       := C:\MinGW-4.8.1\bin\ar.exe rcu
 CXX      := C:\MinGW-4.8.1\bin\g++.exe 
 CC       := C:\MinGW-4.8.1\bin\gcc.exe 
-CXXFLAGS :=  -g -O0 -Wall -std=gnu++0x  $(Preprocessors)
-CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
+CXXFLAGS :=  -O2 -Wall -std=gnu++0x -mwindows  $(Preprocessors)
+CFLAGS   :=  -O2 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := C:\MinGW-4.8.1\bin\as.exe 
 
@@ -63,7 +63,7 @@ AS       := C:\MinGW-4.8.1\bin\as.exe
 ##
 CodeLiteDir:=C:\Program Files\CodeLite
 UNIT_TEST_PP_SRC_DIR:=C:\UnitTest++-1.3
-Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_GameObject.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_TextureManager.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Level.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Player.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_GameObject.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_TextureManager.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Level.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Player.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_icon.rc$(ObjectSuffix) 
 
 
 
@@ -82,7 +82,7 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
 
 $(IntermediateDirectory)/.d:
-	@$(MakeDirCommand) "./Debug"
+	@$(MakeDirCommand) "./Release"
 
 PreBuild:
 
@@ -154,6 +154,8 @@ $(IntermediateDirectory)/src_MenuButton.cpp$(DependSuffix): src/MenuButton.cpp
 $(IntermediateDirectory)/src_MenuButton.cpp$(PreprocessSuffix): src/MenuButton.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_MenuButton.cpp$(PreprocessSuffix) "src/MenuButton.cpp"
 
+$(IntermediateDirectory)/src_icon.rc$(ObjectSuffix): src/icon.rc
+	$(RcCompilerName) -i "C:/Projects/LD30/src/icon.rc" $(RcCmpOptions)   $(ObjectSwitch)$(IntermediateDirectory)/src_icon.rc$(ObjectSuffix) $(RcIncludePath)
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
 ##
@@ -184,8 +186,9 @@ clean:
 	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix)
 	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/icon.rc$(ObjectSuffix)
 	$(RM) $(OutputFile)
 	$(RM) $(OutputFile).exe
-	$(RM) ".build-debug/LD30"
+	$(RM) ".build-release/LD30"
 
 

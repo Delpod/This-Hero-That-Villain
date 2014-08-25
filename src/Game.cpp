@@ -6,13 +6,19 @@ Game* Game::s_pInstance = nullptr;
 void Game::init(sf::VideoMode vm, std::string title, int style) {
 	m_pWindow = new sf::RenderWindow(vm, title, style);
 	m_pWindow->setVerticalSyncEnabled(true);
+	sf::Image icon;
+	icon.loadFromFile("data/gfx/tvth.png");
+	m_pWindow->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	loadTextures();
 	m_whiteScreen.setFillColor(sf::Color(255, 255, 255, 160));
 	m_whiteScreen.setSize(sf::Vector2f(vm.width, vm.height));
 	m_whiteScreen.setOrigin(vm.width / 2.0f, vm.height / 2.0f);
 	m_pLevel = nullptr;
 	m_diff = 2;
+	m_music.openFromFile("data/music/bc.ogg");
+	m_music.setLoop(true);
 	initMainMenu();
+	m_music.play();
 	m_bRunning = true;
 }
 
@@ -34,30 +40,54 @@ void Game::loadTextures() {
 	m_playerIDs.push_back("meatguy");
 	m_playerIDs.push_back("tim");
 	m_playerIDs.push_back("plumber");
-	
+	m_playerIDs.push_back("isaac");
+	m_playerIDs.push_back("octopus");
+	m_playerIDs.push_back("steve");
+	m_playerIDs.push_back("tom");
+	m_playerIDs.push_back("v");
+
 	m_enemyIDs.push_back("witch");
 	m_enemyIDs.push_back("queen");
 	m_enemyIDs.push_back("doctor");
-	
+	m_enemyIDs.push_back("evilplumber");
+	m_enemyIDs.push_back("icequeen");
+	m_enemyIDs.push_back("jester");
+
 	m_playerNames["white"] = std::string("White");
 	m_playerNames["littlered"] = std::string("Little Red");
 	m_playerNames["meatguy"] = std::string("Meat Guy");
 	m_playerNames["tim"] = std::string("Tim");
 	m_playerNames["plumber"] = std::string("Japanese Plumber");
+	m_playerNames["isaac"] = std::string("Isaac");
+	m_playerNames["octopus"] = std::string("Mr. Octopus");
+	m_playerNames["steve"] = std::string("Steve");
+	m_playerNames["tom"] = std::string("Tom");
+	m_playerNames["v"] = std::string("V6X");
 	
 	m_enemyNames["witch"] = std::string("Witch");
 	m_enemyNames["queen"] = std::string("Evil Queen");
 	m_enemyNames["doctor"] = std::string("Dr.");
+	m_enemyNames["evilplumber"] = std::string("Evil Japanese Plumber");
+	m_enemyNames["icequeen"] = std::string("Queen of Ice");
+	m_enemyNames["jester"] = std::string("Jester");
 	
 	m_playerCollisionRects["white"] = sf::IntRect(4, 4, 10, 28);
 	m_playerCollisionRects["littlered"] = sf::IntRect(0, 0, 10, 26);
 	m_playerCollisionRects["meatguy"] = sf::IntRect(0, 0, 20, 18);
 	m_playerCollisionRects["tim"] = sf::IntRect(2, 4, 12, 26);
 	m_playerCollisionRects["plumber"] = sf::IntRect(0, 0, 12, 28);
+	m_playerCollisionRects["isaac"] = sf::IntRect(0, 0, 12, 26);
+	m_playerCollisionRects["octopus"] = sf::IntRect(0, 0, 10, 32);
+	m_playerCollisionRects["steve"] = sf::IntRect(0, 0, 10, 32);
+	m_playerCollisionRects["tom"] = sf::IntRect(0, 0, 16, 28);
+	m_playerCollisionRects["v"] = sf::IntRect(0, 0, 14, 30);
 	
 	m_enemyCollisionRects["witch"] = sf::IntRect(0, 0, 14, 32);
 	m_enemyCollisionRects["queen"] = sf::IntRect(0, 4, 14, 36);
 	m_enemyCollisionRects["doctor"] = sf::IntRect(0, 6, 18, 20);
+	m_enemyCollisionRects["evilplumber"] = sf::IntRect(0, 0, 14, 28);
+	m_enemyCollisionRects["icequeen"] = sf::IntRect(4, 2, 14, 34);
+	m_enemyCollisionRects["jester"] = sf::IntRect(2, 2, 12, 34);
 	
 	for(unsigned int i = 0; i < m_playerIDs.size(); ++i) {
 		std::string path = "data/gfx/";
@@ -102,6 +132,7 @@ void Game::handleEvents() {
 							m_bRunning = false;
 							break;
 						case 3:
+							m_music.setVolume(70.0f);
 							state = GAME;
 							break;
 						case 4:
@@ -195,6 +226,7 @@ void Game::initMainMenu() {
 		delete m_pLevel;
 		m_pLevel = nullptr;
 	}
+	m_music.setVolume(50.0f);
 	m_menuButtons.clear();
 	
 	m_pWindow->setView(m_pWindow->getDefaultView());
@@ -232,12 +264,14 @@ void Game::initMainMenu() {
 }
 
 void Game::initGame() {
+	m_music.setVolume(70.0f);
 	m_pLevel = new Level();
 	m_pLevel->create(m_diff);
 	state = GAME;
 }
 
 void Game::initPause() {
+	m_music.setVolume(50.0f);
 	sf::View view = m_pWindow->getView();
 	m_menuButtons.clear();
 	m_pWindow->setView(m_pWindow->getDefaultView());
@@ -255,6 +289,7 @@ void Game::initPause() {
 }
 
 void Game::initNextLevel() {
+	m_music.setVolume(50.0f);
 	sf::View view = m_pWindow->getView();
 	m_menuButtons.clear();
 	m_pWindow->setView(m_pWindow->getDefaultView());
@@ -275,6 +310,7 @@ void Game::initNextLevel() {
 }
 
 void Game::initLose() {
+	m_music.setVolume(50.0f);
 	sf::View view = m_pWindow->getView();
 	m_menuButtons.clear();
 	m_pWindow->setView(m_pWindow->getDefaultView());
