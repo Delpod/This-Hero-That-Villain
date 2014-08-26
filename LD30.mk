@@ -15,8 +15,8 @@ CurrentFileFullPath    :=
 User                   :=xvix
 Date                   :=08/25/14
 CodeLitePath           :="C:\Program Files\CodeLite"
-LinkerName             :=C:\MinGW-4.8.1\bin\g++.exe 
-SharedObjectLinkerName :=C:\MinGW-4.8.1\bin\g++.exe -shared -fPIC
+LinkerName             :=C:/MinGW-4.8.1/bin/g++.exe 
+SharedObjectLinkerName :=C:/MinGW-4.8.1/bin/g++.exe -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
 PreprocessSuffix       :=.i
@@ -36,7 +36,7 @@ ObjectsFileList        :="LD30.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=makedir
 RcCmpOptions           := 
-RcCompilerName         :=C:\MinGW-4.8.1\bin\windres.exe 
+RcCompilerName         :=C:/MinGW-4.8.1/bin/windres.exe 
 LinkOptions            :=  -mwindows 
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch). $(IncludeSwitch)C:/SFML-2.0/include $(IncludeSwitch)C:/Box2D/include 
 IncludePCH             := 
@@ -49,13 +49,13 @@ LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)C:/SFML-2.0/
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := C:\MinGW-4.8.1\bin\ar.exe rcu
-CXX      := C:\MinGW-4.8.1\bin\g++.exe 
-CC       := C:\MinGW-4.8.1\bin\gcc.exe 
+AR       := C:/MinGW-4.8.1/bin/ar.exe rcu
+CXX      := C:/MinGW-4.8.1/bin/g++.exe 
+CC       := C:/MinGW-4.8.1/bin/gcc.exe 
 CXXFLAGS :=  -O2 -Wall -std=gnu++0x -mwindows  $(Preprocessors)
 CFLAGS   :=  -O2 -Wall $(Preprocessors)
 ASFLAGS  := 
-AS       := C:\MinGW-4.8.1\bin\as.exe 
+AS       := C:/MinGW-4.8.1/bin/as.exe 
 
 
 ##
@@ -162,31 +162,8 @@ $(IntermediateDirectory)/src_icon.rc$(ObjectSuffix): src/icon.rc
 ## Clean
 ##
 clean:
-	$(RM) $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_main.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_Game.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_Game.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/src_GameObject.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_GameObject.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_GameObject.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/src_TextureManager.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_TextureManager.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_TextureManager.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/src_Level.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_Level.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_Level.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/src_Player.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_Player.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_Player.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_Enemy.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_Enemy.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/src_MenuButton.cpp$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/icon.rc$(ObjectSuffix)
+	$(RM) ./Release/*$(ObjectSuffix)
+	$(RM) ./Release/*$(DependSuffix)
 	$(RM) $(OutputFile)
 	$(RM) $(OutputFile).exe
 	$(RM) ".build-release/LD30"
